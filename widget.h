@@ -6,6 +6,7 @@
 #include <QTextEdit>
 #include <QLineEdit>
 #include <QVBoxLayout>
+#include <QMap>
 #include "pile.h"
 #include <stdexcept>
 
@@ -18,10 +19,13 @@ private:
 
     Pile<QString> strPile;
     Pile<double> numPile;
+    QMap<QString,void(Interprete::*)()>reference;
 
 public:
     Interprete(QWidget *parent = 0);
     ~Interprete();
+    void execute();
+    void addition();
 
 public slots:
     void doInput();

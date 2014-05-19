@@ -14,9 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         widget.cpp \
-    fonc.cpp
 
 HEADERS  += widget.h \
-    pile.h
+    pile.h \
+    reference.h
 
 OTHER_FILES +=
