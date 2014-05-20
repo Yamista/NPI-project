@@ -9,6 +9,8 @@
 #include <QMap>
 #include "pile.h"
 #include <stdexcept>
+#include <iostream>
+#include <math.h>
 
 class Interprete : public QWidget
 {
@@ -16,8 +18,10 @@ class Interprete : public QWidget
 private:
     QTextEdit* generalDisplay;
     QLineEdit* input;
+    QStringList instruction;
+    int curseur;
 
-    Pile<QString> strPile;
+    Pile<std::string> strPile;
     Pile<double> numPile;
     QMap<QString,void(Interprete::*)()>reference;
 
@@ -26,6 +30,13 @@ public:
     ~Interprete();
     void execute();
     void addition();
+    void swap();
+    void swapString();
+    void sinus();
+    void cosinus();
+    void tangente();
+    void racineCarre();
+    void tronque();
 
 public slots:
     void doInput();

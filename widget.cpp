@@ -11,6 +11,13 @@ Interprete::Interprete(QWidget *parent)
 
     //initialisation de QMap
     reference["+"] = &Interprete::addition;
+    reference["swap"]= &Interprete::swap;
+    reference["swapstr"]=&Interprete::swapString;
+    reference["sin"]=&Interprete::sinus;
+    reference["cos"]=&Interprete::cosinus;
+    reference["tan"]=&Interprete::tangente;
+    reference["sqrt"]=&Interprete::racineCarre;
+    reference["trunc"]=&Interprete::tronque;
 
     QVBoxLayout* vLayout1=new QVBoxLayout(this);
         vLayout1->addWidget(generalDisplay);
@@ -35,38 +42,29 @@ void Interprete::doInput(){
         execute();
 
         // Affichage du résultat
-        generalDisplay->setText(generalDisplay->toPlainText()+'\n'+QString::number(numPile.depiler()));
+        // generalDisplay->setText(generalDisplay->toPlainText()+'\n'+QString::number(numPile.depiler()));
 
         input->clear();
     }
 }
 
 void Interprete::execute(){
-    // Initialise notre map si elle est vide
-    /*
-    if(interpreteur->reference.isEmpty()){
-        interpreteur->reference["+"] = addition;
-        interpreteur->reference["-"] = soustraction;
-        interpreteur->reference["*"] = multiplication;
-        interpreteur->reference["/"] = division;
-    }*/
-    // Si on appelle un fichier
-    // Si on veut mettre un commentaire
 
     // Liste des mots de l'instruction
-    QStringList instruction = input->text().split(" ");
+    instruction = input->text().split(" ");
 
-    int i=0;
+    curseur=0;
     do{
     // Si le mot clef existe
-        if(reference.find(instruction[i]) != reference.end()){
-            (this->*reference.value(instruction[i]))(); // Appelle de la fonction
+        if(reference.find(instruction[curseur]) != reference.end()){
+            (this->*reference.value(instruction[curseur]))(); // Appelle de la fonction
         }
         else{
-            int test = instruction[i].toDouble();
-            numPile.empiler(instruction[i].toDouble());
+            //int test = instruction[curseur].toDouble();
+            numPile.empiler(instruction[curseur].toDouble());
         }
-    }while(i++ < instruction.count());
+        ++curseur;
+    }while(curseur< instruction.count());
 
 }
 
@@ -76,3 +74,54 @@ void Interprete::addition() {
     double b = numPile.depiler();
     numPile.empiler(a+b);
 }
+
+// swap
+void Interprete::swap(){
+    double a = numPile.depiler();
+    double b = numPile.depiler();
+    numPile.empiler(b);
+    numPile.empiler(a);
+}
+
+// swapstr
+void Interprete::swapString(){
+    std::string a = strPile.depiler();
+    std::string b = strPile.depiler();
+    strPile.empiler(b);
+    strPile.empiler(a);
+}
+
+#define PI 3.14159265358979323846
+
+// sin
+void Interprete::sinus(){
+    double rad(PI*(numPile.depiler())/180);
+    rad=sin(rad);
+    numPile.empiler(180*rad*PI);
+}
+
+// cos
+void Interprete::cosinus(){
+    double rad(PI*(numPile.depiler())/180);
+    rad=cos(rad);
+    numPile.empiler(180*rad*PI);
+}
+
+// tan
+void Interprete::tangente(){
+    double rad(PI*(numPile.depiler())/180);
+    rad=tan(rad);
+    numPile.empiler(180*rad*PI);
+}
+
+// sqrt
+void Interprete::racineCarre(){
+    numPile.empiler(sqrt(numPile.depiler()));
+}
+
+// trunc
+void Interprete::tronque(){
+    numPile.empiler(double(int(numPile.depiler())));
+}
+
+// line
